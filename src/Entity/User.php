@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstName": "exact", "lastName": "exact"})
+ * @ApiFilter(RangeFilter::class, properties={"lastName"})
  */
 class User
 {
@@ -22,11 +28,13 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"task"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"task"})
      */
     private $lastName;
 
